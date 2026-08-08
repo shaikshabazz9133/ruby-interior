@@ -112,21 +112,33 @@ export default function Hero({ start = true }) {
     my.set((e.clientY / window.innerHeight - 0.5) * 2);
   };
 
-  // Swipe / drag on the stage.
+  // Swipe / drag. These live on the whole section rather than on the photo
+  // layer: on a phone the copy covers the entire stage, so handlers bound to
+  // the image would never see the gesture.
   const dragStart = useRef(null);
   const onPointerDown = (e) => {
-    dragStart.current = e.clientX;
+    // Let taps and drags that begin on a control do their own job.
+    if (e.target.closest?.("a, button")) return;
+    dragStart.current = { x: e.clientX, y: e.clientY };
     setPaused(true);
   };
-  const onPointerUp = (e) => {
+  const endDrag = (e) => {
     const from = dragStart.current;
     dragStart.current = null;
     setPaused(false);
-    if (from == null) return;
-    const delta = e.clientX - from;
-    if (Math.abs(delta) < 60) return;
-    delta < 0 ? next() : prev();
+    if (!from) return;
+    const dx = e.clientX - from.x;
+    const dy = e.clientY - from.y;
+    // Horizontal intent only, so a vertical scroll never changes the slide.
+    if (Math.abs(dx) < 55 || Math.abs(dx) < Math.abs(dy)) return;
+    dx < 0 ? next() : prev();
   };
+
+  // Hover pauses autoplay, but only for a real mouse — on a touch screen
+  // pointerenter fires on tap and no matching leave ever arrives, which would
+  // park the carousel for good.
+  const onPointerEnter = (e) => e.pointerType === "mouse" && setPaused(true);
+  const onPointerLeave = (e) => e.pointerType === "mouse" && setPaused(false);
 
   // An empty target parks the element on its `initial` values until ready.
   const on = (target) => (start ? target : {});
@@ -136,15 +148,13 @@ export default function Hero({ start = true }) {
       id="home"
       ref={ref}
       onPointerMove={onPointerMove}
-      className="relative isolate flex min-h-svh flex-col overflow-hidden bg-base text-ivory"
+      onPointerDown={onPointerDown}
+      onPointerUp={endDrag}
+      onPointerCancel={endDrag}
+      className="relative isolate flex min-h-svh touch-pan-y flex-col overflow-hidden bg-base text-ivory"
     >
       {/* ---------- Carousel stage ---------- */}
-      <div
-        className="absolute inset-0 -z-10 touch-pan-y select-none"
-        onPointerDown={onPointerDown}
-        onPointerUp={onPointerUp}
-        onPointerCancel={onPointerUp}
-      >
+      <div className="absolute inset-0 -z-10 select-none">
         <motion.div style={{ y: layerY, scale: layerScale }} className="absolute inset-0">
           <AnimatePresence initial={false} custom={dir}>
             <motion.div
@@ -214,7 +224,7 @@ export default function Hero({ start = true }) {
       {/* ---------- Copy ---------- */}
       <motion.div
         style={reduced ? undefined : { y: copyY, opacity: copyOpacity }}
-        className="container-x relative flex flex-1 flex-col justify-center pb-10 pt-28 lg:pb-14 lg:pt-32"
+        className="container-x relative flex flex-1 flex-col justify-center pb-6 pt-20 sm:pb-10 sm:pt-28 lg:pb-14 lg:pt-32"
       >
         <div className="max-w-2xl">
           <AnimatePresence mode="wait">
@@ -224,14 +234,14 @@ export default function Hero({ start = true }) {
               animate={on({ opacity: 1, y: 0 })}
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.5, ease: EASE }}
-              className="flex items-center gap-3 text-eyebrow text-brass-soft"
+              className="flex items-center gap-2.5 text-eyebrow text-brass-soft sm:gap-3"
             >
-              <span className="h-px w-10 bg-brass-soft/70" />
+              <span className="h-px w-6 bg-brass-soft/70 sm:w-10" />
               {slide.eyebrow}
             </motion.p>
           </AnimatePresence>
 
-          <h1 className="text-display mt-5 text-ivory">
+          <h1 className="text-display mt-4 text-ivory sm:mt-5">
             <AnimatePresence mode="wait">
               <motion.span key={`title-${slide.id}`} className="block">
                 {slide.title.map((word, i) => (
@@ -254,7 +264,7 @@ export default function Hero({ start = true }) {
             </AnimatePresence>
           </h1>
 
-          <div className="mt-6 min-h-22 sm:min-h-18">
+          <div className="mt-4 sm:mt-6 sm:min-h-18">
             <AnimatePresence mode="wait">
               <motion.p
                 key={`blurb-${slide.id}`}
@@ -262,7 +272,7 @@ export default function Hero({ start = true }) {
                 animate={on({ opacity: 1, y: 0 })}
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.6, delay: 0.15, ease: EASE }}
-                className="text-body max-w-[46ch] text-ivory/75"
+                className="text-body line-clamp-3 max-w-[46ch] text-ivory/75 sm:line-clamp-none"
               >
                 {slide.blurb}
               </motion.p>
@@ -273,13 +283,13 @@ export default function Hero({ start = true }) {
             initial={{ opacity: 0, y: 22 }}
             animate={on({ opacity: 1, y: 0 })}
             transition={{ duration: 0.85, delay: 0.75, ease: EASE }}
-            className="mt-8 flex flex-wrap items-center gap-3"
+            className="mt-6 flex flex-wrap items-center gap-2.5 sm:mt-8 sm:gap-3"
           >
             <Magnetic strength={0.22}>
               <a
                 href="#contact"
                 data-cursor="Let's talk"
-                className="group relative inline-flex items-center gap-3 overflow-hidden rounded-full bg-brass px-7 py-3.5 text-[11px] uppercase tracking-[0.18em] text-base"
+                className="group relative inline-flex items-center justify-center gap-3 overflow-hidden rounded-full bg-brass px-6 py-3 text-[11px] uppercase tracking-[0.18em] text-base sm:px-7 sm:py-3.5"
               >
                 <span className="relative z-10">
                   Start your project
@@ -300,7 +310,7 @@ export default function Hero({ start = true }) {
 
             <a
               href="#work"
-              className="group inline-flex items-center gap-2.5 rounded-full border border-ivory/30 px-7 py-3.5 text-[11px] uppercase tracking-[0.18em] text-ivory transition-colors duration-400 hover:border-brass-soft hover:text-brass-soft"
+              className="group inline-flex items-center justify-center gap-2.5 rounded-full border border-ivory/30 px-6 py-3 text-[11px] uppercase tracking-[0.18em] text-ivory transition-colors duration-400 hover:border-brass-soft hover:text-brass-soft sm:px-7 sm:py-3.5"
             >
               View our work
               <span className="transition-transform duration-400 group-hover:translate-x-1">↗</span>
@@ -312,7 +322,7 @@ export default function Hero({ start = true }) {
             initial={{ opacity: 0, y: 22 }}
             animate={on({ opacity: 1, y: 0 })}
             transition={{ duration: 0.85, delay: 0.9, ease: EASE }}
-            className="mt-10 grid max-w-md grid-cols-3 gap-4 border-t border-ivory/15 pt-6"
+            className="mt-10 hidden max-w-md grid-cols-3 gap-4 border-t border-ivory/15 pt-6 sm:grid"
           >
             {[
               ["420+", "Spaces delivered"],
@@ -357,14 +367,14 @@ export default function Hero({ start = true }) {
         initial={{ opacity: 0, y: 24 }}
         animate={on({ opacity: 1, y: 0 })}
         transition={{ duration: 0.8, delay: 1.15, ease: EASE }}
-        onMouseEnter={() => setPaused(true)}
-        onMouseLeave={() => setPaused(false)}
-        className="container-x relative z-10 pb-8 lg:pb-10"
+        onPointerEnter={onPointerEnter}
+        onPointerLeave={onPointerLeave}
+        className="container-x relative z-10 pb-6 sm:pb-8 lg:pb-10"
       >
-        <div className="flex flex-col gap-5 border-t border-ivory/15 pt-5 sm:flex-row sm:items-end sm:justify-between">
+        <div className="flex items-end justify-between gap-3 border-t border-ivory/15 pt-4 sm:gap-5 sm:pt-5">
           {/* Now-showing caption */}
-          <div className="flex items-baseline gap-4">
-            <span className="font-display text-lg text-ivory/70 tabular-nums">
+          <div className="flex min-w-0 items-baseline gap-3 sm:gap-4">
+            <span className="shrink-0 font-display text-base text-ivory/70 tabular-nums sm:text-lg">
               {String(index + 1).padStart(2, "0")}
               <span className="mx-1 text-ivory/30">/</span>
               <span className="text-ivory/40">{String(count).padStart(2, "0")}</span>
@@ -376,25 +386,30 @@ export default function Hero({ start = true }) {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.45, ease: EASE }}
+                className="min-w-0"
               >
-                <p className="text-sm text-ivory">{slide.project}</p>
-                <p className="mt-0.5 text-[10px] uppercase tracking-[0.18em] text-ivory/50">
+                <p data-slide-caption className="truncate text-[13px] text-ivory sm:text-sm">
+                  {slide.project}
+                </p>
+                <p className="mt-0.5 truncate text-[10px] uppercase tracking-[0.18em] text-ivory/50">
                   {slide.meta}
                 </p>
               </motion.div>
             </AnimatePresence>
           </div>
 
-          <div className="flex items-center gap-6">
-            {/* Progress rails — the active one fills over the slide's dwell */}
-            <div className="flex flex-1 items-center gap-2 sm:flex-none">
+          <div className="flex shrink-0 items-center gap-3 sm:gap-6">
+            {/* Progress rails — the active one fills over the slide's dwell.
+                Below sm there is no room for them; the 03/05 counter carries
+                the position instead. */}
+            <div className="hidden items-center gap-2 sm:flex">
               {HERO_SLIDES.map((s, i) => (
                 <button
                   key={s.id}
                   onClick={() => go(i, i > index ? 1 : -1)}
                   aria-label={`Show slide ${i + 1}: ${s.project}`}
                   aria-current={i === index}
-                  className="group relative h-6 w-10 sm:w-14"
+                  className="group relative h-6 w-12 md:w-14"
                 >
                   <span className="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-ivory/25 transition-colors group-hover:bg-ivory/50" />
                   {i === index && (
