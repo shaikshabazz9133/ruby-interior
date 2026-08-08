@@ -10,22 +10,22 @@ const EASE = [0.16, 1, 0.3, 1];
 
 export default function Services() {
   return (
-    <section id="services" className="section-y bg-sage-pale">
+    <section id="services" className="section-y bg-surface">
       <div className="container-x">
         {/* ---------- Header ---------- */}
         <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <div className="max-w-xl">
             <Reveal variant="fade">
               <div className="flex items-center gap-3">
-                <span className="h-px w-10 bg-walnut" />
-                <span className="text-eyebrow text-walnut">What we do</span>
+                <span className="h-px w-10 bg-clay" />
+                <span className="text-eyebrow text-clay">What we do</span>
               </div>
             </Reveal>
 
             <AnimatedText
               as="h2"
               text="Six ways we shape a space"
-              className="text-h2 mt-5 text-balance text-forest"
+              className="text-h2 mt-5 text-balance text-ivory"
               highlight={[0]}
             />
           </div>
@@ -45,10 +45,10 @@ export default function Services() {
               <motion.article
                 whileHover={{ y: -6 }}
                 transition={{ duration: 0.4, ease: EASE }}
-                className="group flex h-full flex-col overflow-hidden rounded-sm border border-forest/8 bg-bone transition-colors duration-500 hover:border-sage/45"
+                className="group flex h-full flex-col overflow-hidden rounded-sm border border-ivory/8 bg-elevated transition-colors duration-500 hover:border-brass/45"
               >
                 {/* Image */}
-                <div className="relative aspect-16/10 w-full overflow-hidden bg-sage-pale">
+                <div className="relative aspect-16/10 w-full overflow-hidden bg-elevated-2">
                   <Image
                     src={service.image}
                     alt={service.title}
@@ -56,7 +56,7 @@ export default function Services() {
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     className="object-cover transition-transform duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
                   />
-                  <span className="absolute left-4 top-4 rounded-full bg-bone/90 px-2.5 py-1 font-sans text-[10px] tracking-[0.18em] text-forest backdrop-blur-sm">
+                  <span className="absolute left-4 top-4 rounded-full bg-base/70 px-2.5 py-1 font-sans text-[10px] tracking-[0.18em] text-ivory backdrop-blur-sm">
                     {service.id}
                   </span>
                 </div>
@@ -64,10 +64,10 @@ export default function Services() {
                 {/* Body */}
                 <div className="flex flex-1 flex-col p-5 sm:p-6">
                   <div className="flex items-start justify-between gap-3">
-                    <h3 className="text-h3 min-w-0 text-forest transition-colors duration-400 group-hover:text-sage">
+                    <h3 className="text-h3 min-w-0 text-ivory transition-colors duration-400 group-hover:text-brass">
                       {service.title}
                     </h3>
-                    <span className="mt-0.5 grid size-7 shrink-0 place-items-center rounded-full border border-forest/15 text-forest/50 transition-all duration-500 group-hover:rotate-45 group-hover:border-sage group-hover:bg-sage group-hover:text-bone">
+                    <span className="mt-0.5 grid size-7 shrink-0 place-items-center rounded-full border border-ivory/15 text-ivory/50 transition-all duration-500 group-hover:rotate-45 group-hover:border-brass group-hover:bg-brass group-hover:text-ivory">
                       <svg
                         viewBox="0 0 16 16"
                         className="size-3"
@@ -89,7 +89,7 @@ export default function Services() {
                     {service.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="rounded-full border border-forest/12 px-2.5 py-1 text-[9px] uppercase tracking-[0.14em] text-muted transition-colors duration-500 group-hover:border-sage/40 group-hover:text-sage"
+                        className="rounded-full border border-ivory/12 px-2.5 py-1 text-[9px] uppercase tracking-[0.14em] text-muted transition-colors duration-500 group-hover:border-brass/40 group-hover:text-brass"
                       >
                         {tag}
                       </span>
@@ -104,12 +104,12 @@ export default function Services() {
         <Reveal variant="up" className="mt-10 flex justify-center">
           <a
             href="#contact"
-            className="group relative inline-block overflow-hidden rounded-full border border-forest/25 px-8 py-3.5 text-[11px] uppercase tracking-[0.18em] text-forest"
+            className="group relative inline-block overflow-hidden rounded-full border border-ivory/25 px-8 py-3.5 text-[11px] uppercase tracking-[0.18em] text-ivory"
           >
-            <span className="relative z-10 transition-colors duration-500 group-hover:text-bone">
+            <span className="relative z-10 transition-colors duration-500 group-hover:text-base">
               Request a quote
             </span>
-            <span className="absolute inset-0 origin-bottom scale-y-0 bg-forest transition-transform duration-500 ease-[cubic-bezier(0.76,0,0.24,1)] group-hover:scale-y-100" />
+            <span className="absolute inset-0 origin-bottom scale-y-0 bg-brass transition-transform duration-500 ease-[cubic-bezier(0.76,0,0.24,1)] group-hover:scale-y-100" />
           </a>
         </Reveal>
       </div>

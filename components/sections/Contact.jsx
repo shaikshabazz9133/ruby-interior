@@ -39,8 +39,8 @@ function Field({ label, name, type = "text", value, onChange, error, textarea })
         onBlur={() => setFocused(false)}
         aria-invalid={Boolean(error)}
         aria-describedby={error ? `${name}-error` : undefined}
-        className={`peer w-full resize-none border-b bg-transparent pb-2.5 pt-6 text-forest outline-none transition-colors duration-300 placeholder:text-transparent ${
-          error ? "border-walnut" : "border-forest/20 focus:border-sage"
+        className={`peer w-full resize-none border-b bg-transparent pb-2.5 pt-6 text-ivory outline-none transition-colors duration-300 placeholder:text-transparent ${
+          error ? "border-clay" : "border-ivory/20 focus:border-brass"
         }`}
         placeholder={label}
       />
@@ -48,7 +48,7 @@ function Field({ label, name, type = "text", value, onChange, error, textarea })
         htmlFor={name}
         className={`pointer-events-none absolute left-0 origin-left transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
           lifted
-            ? "top-0 text-[10px] uppercase tracking-[0.18em] text-sage"
+            ? "top-0 text-[10px] uppercase tracking-[0.18em] text-brass"
             : "top-5 text-base text-muted"
         }`}
       >
@@ -56,7 +56,7 @@ function Field({ label, name, type = "text", value, onChange, error, textarea })
       </label>
 
       <span
-        className={`absolute bottom-0 left-0 h-px w-full origin-left bg-sage transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+        className={`absolute bottom-0 left-0 h-px w-full origin-left bg-brass transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
           focused ? "scale-x-100" : "scale-x-0"
         }`}
       />
@@ -68,7 +68,7 @@ function Field({ label, name, type = "text", value, onChange, error, textarea })
             initial={{ opacity: 0, y: -5 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
-            className="mt-1.5 text-xs text-walnut"
+            className="mt-1.5 text-xs text-clay"
           >
             {error}
           </motion.p>
@@ -82,7 +82,7 @@ function Field({ label, name, type = "text", value, onChange, error, textarea })
 function PillGroup({ label, options, value, onSelect, error }) {
   return (
     <fieldset>
-      <legend className="text-[10px] uppercase tracking-[0.18em] text-sage">
+      <legend className="text-[10px] uppercase tracking-[0.18em] text-brass">
         {label}
       </legend>
       <div className="mt-3 flex flex-wrap gap-2">
@@ -96,8 +96,8 @@ function PillGroup({ label, options, value, onSelect, error }) {
               aria-pressed={isActive}
               className={`rounded-full border px-4 py-2 text-[11px] tracking-[0.06em] transition-all duration-400 ${
                 isActive
-                  ? "border-sage bg-sage text-bone"
-                  : "border-forest/15 text-muted hover:border-sage/60 hover:text-forest"
+                  ? "border-brass bg-brass text-base"
+                  : "border-ivory/15 text-muted hover:border-brass/60 hover:text-ivory"
               }`}
             >
               {option}
@@ -105,7 +105,7 @@ function PillGroup({ label, options, value, onSelect, error }) {
           );
         })}
       </div>
-      {error && <p className="mt-1.5 text-xs text-walnut">{error}</p>}
+      {error && <p className="mt-1.5 text-xs text-clay">{error}</p>}
     </fieldset>
   );
 }
@@ -148,22 +148,22 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="section-y bg-bone">
+    <section id="contact" className="section-y bg-base">
       <div className="container-x">
         <div className="grid gap-10 lg:grid-cols-12 lg:gap-14">
           {/* ---------- Left: details ---------- */}
           <div className="lg:col-span-5">
             <Reveal variant="fade">
               <div className="flex items-center gap-3">
-                <span className="h-px w-10 bg-walnut" />
-                <span className="text-eyebrow text-walnut">Get in touch</span>
+                <span className="h-px w-10 bg-clay" />
+                <span className="text-eyebrow text-clay">Get in touch</span>
               </div>
             </Reveal>
 
             <AnimatedText
               as="h2"
               text="Tell us about your space"
-              className="text-h2 mt-5 max-w-[14ch] text-balance text-forest"
+              className="text-h2 mt-5 max-w-[14ch] text-balance text-ivory"
               highlight={[4]}
             />
 
@@ -187,12 +187,12 @@ export default function Contact() {
                     {label}
                   </p>
                   {href ? (
-                    <a href={href} className="group mt-1 inline-block break-words text-lg text-forest">
+                    <a href={href} className="group mt-1 inline-block break-words text-lg text-ivory">
                       {value}
-                      <span className="block h-px w-0 bg-sage transition-all duration-500 group-hover:w-full" />
+                      <span className="block h-px w-0 bg-brass transition-all duration-500 group-hover:w-full" />
                     </a>
                   ) : (
-                    <p className="mt-1 max-w-[32ch] text-lg text-forest/85">{value}</p>
+                    <p className="mt-1 max-w-[32ch] text-lg text-ivory/85">{value}</p>
                   )}
                 </Reveal>
               ))}
@@ -206,7 +206,7 @@ export default function Contact() {
                     href={s.href}
                     target="_blank"
                     rel="noreferrer"
-                    className="rounded-full border border-forest/15 px-4 py-2 text-[10px] uppercase tracking-[0.14em] text-muted transition-all duration-400 hover:border-sage hover:text-sage"
+                    className="rounded-full border border-ivory/15 px-4 py-2 text-[10px] uppercase tracking-[0.14em] text-muted transition-all duration-400 hover:border-brass hover:text-brass"
                   >
                     {s.label}
                   </a>
@@ -218,7 +218,7 @@ export default function Contact() {
           {/* ---------- Right: form ---------- */}
           <div className="lg:col-span-7">
             <Reveal variant="blur">
-              <div className="rounded-sm border border-forest/10 bg-sage-pale/45 p-5 sm:p-8">
+              <div className="rounded-sm border border-ivory/10 bg-surface p-5 sm:p-8">
                 <AnimatePresence mode="wait">
                   {status === "sent" ? (
                     <motion.div
@@ -233,14 +233,14 @@ export default function Contact() {
                         initial={{ scale: 0, rotate: -35 }}
                         animate={{ scale: 1, rotate: 0 }}
                         transition={{ delay: 0.12, type: "spring", stiffness: 200, damping: 14 }}
-                        className="grid size-16 place-items-center rounded-full border border-sage/45 bg-sage/12"
+                        className="grid size-16 place-items-center rounded-full border border-brass/45 bg-brass/12"
                       >
                         <svg
                           viewBox="0 0 24 24"
                           fill="none"
                           stroke="currentColor"
                           strokeWidth="1.6"
-                          className="size-7 text-sage"
+                          className="size-7 text-brass"
                           aria-hidden="true"
                         >
                           <motion.path
@@ -254,14 +254,14 @@ export default function Contact() {
                         </svg>
                       </motion.span>
 
-                      <h3 className="mt-6 text-2xl text-forest">Message received</h3>
+                      <h3 className="mt-6 text-2xl text-ivory">Message received</h3>
                       <p className="text-body mt-2 max-w-[34ch] text-muted">
                         Thank you. A designer from the studio will be in touch
                         within two working days.
                       </p>
                       <button
                         onClick={() => setStatus("idle")}
-                        className="mt-6 text-[10px] uppercase tracking-[0.18em] text-sage underline-offset-4 hover:underline"
+                        className="mt-6 text-[10px] uppercase tracking-[0.18em] text-brass underline-offset-4 hover:underline"
                       >
                         Send another enquiry
                       </button>
@@ -333,12 +333,12 @@ export default function Contact() {
                       <button
                         type="submit"
                         disabled={status === "sending"}
-                        className="group relative w-full overflow-hidden rounded-full bg-forest px-8 py-4 text-[11px] uppercase tracking-[0.18em] text-bone transition-opacity disabled:opacity-70"
+                        className="group relative w-full overflow-hidden rounded-full bg-brass px-8 py-4 text-[11px] uppercase tracking-[0.18em] text-base transition-opacity disabled:opacity-70"
                       >
                         <span className="relative z-10 flex items-center justify-center gap-2.5">
                           {status === "sending" ? (
                             <>
-                              <span className="size-3.5 animate-spin rounded-full border border-bone/35 border-t-bone" />
+                              <span className="size-3.5 animate-spin rounded-full border border-base/35 border-t-base" />
                               Sending
                             </>
                           ) : (
@@ -350,7 +350,7 @@ export default function Contact() {
                             </>
                           )}
                         </span>
-                        <span className="absolute inset-0 origin-bottom scale-y-0 bg-sage transition-transform duration-500 ease-[cubic-bezier(0.76,0,0.24,1)] group-hover:scale-y-100" />
+                        <span className="absolute inset-0 origin-bottom scale-y-0 bg-ivory transition-transform duration-500 ease-[cubic-bezier(0.76,0,0.24,1)] group-hover:scale-y-100" />
                       </button>
 
                       <p className="text-center text-xs text-muted">
@@ -371,7 +371,7 @@ export default function Contact() {
             <AnimatedText
               as="h3"
               text="Questions we get asked"
-              className="text-h2 max-w-[12ch] text-balance text-forest"
+              className="text-h2 max-w-[12ch] text-balance text-ivory"
             />
           </div>
 
@@ -384,7 +384,7 @@ export default function Contact() {
                   key={item.q}
                   variant="up"
                   delay={i * 0.05}
-                  className="border-t border-forest/12 last:border-b"
+                  className="border-t border-ivory/12 last:border-b"
                 >
                   <button
                     onClick={() => setOpenFaq(isOpen ? -1 : i)}
@@ -393,7 +393,7 @@ export default function Contact() {
                   >
                     <span
                       className={`text-lg transition-colors duration-400 ${
-                        isOpen ? "text-sage" : "text-forest group-hover:text-sage"
+                        isOpen ? "text-brass" : "text-ivory group-hover:text-brass"
                       }`}
                     >
                       {item.q}
@@ -401,7 +401,7 @@ export default function Contact() {
                     <motion.span
                       animate={{ rotate: isOpen ? 45 : 0 }}
                       transition={{ duration: 0.35, ease: EASE }}
-                      className="grid size-8 shrink-0 place-items-center rounded-full border border-forest/15 text-muted group-hover:border-sage group-hover:text-sage"
+                      className="grid size-8 shrink-0 place-items-center rounded-full border border-ivory/15 text-muted group-hover:border-brass group-hover:text-brass"
                     >
                       <svg
                         viewBox="0 0 16 16"

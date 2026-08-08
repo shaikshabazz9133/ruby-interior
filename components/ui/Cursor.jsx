@@ -52,13 +52,13 @@ export default function Cursor() {
   return (
     <div className="pointer-events-none fixed inset-0 z-130 hidden lg:block">
       <motion.div
-        className="absolute size-1.5 rounded-full bg-sage"
+        className="absolute size-1.5 rounded-full bg-brass"
         style={{ x, y, translateX: "-50%", translateY: "-50%" }}
         animate={{ opacity: visible && !label ? 1 : 0, scale: hovering ? 0 : 1 }}
         transition={{ duration: 0.2 }}
       />
       <motion.div
-        className="absolute flex items-center justify-center rounded-full border border-sage/80 backdrop-blur-[1px]"
+        className="absolute flex items-center justify-center rounded-full border border-brass/80 backdrop-blur-[1px]"
         style={{ x: ringX, y: ringY, translateX: "-50%", translateY: "-50%" }}
         animate={{
           width: label ? 84 : hovering ? 52 : 30,
@@ -73,7 +73,7 @@ export default function Cursor() {
         transition={{ type: "spring", stiffness: 320, damping: 28 }}
       >
         {label && (
-          <span className="text-[9px] font-medium uppercase tracking-[0.18em] text-bone">
+          <span className="text-[9px] font-medium uppercase tracking-[0.18em] text-ivory">
             {label}
           </span>
         )}

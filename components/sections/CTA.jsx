@@ -33,23 +33,23 @@ export default function CTA() {
       </motion.div>
 
       {/* Scrim */}
-      <div className="absolute inset-0 z-0 bg-forest/78" />
-      <div className="absolute inset-0 z-0 bg-linear-to-t from-forest/90 via-transparent to-forest/60" />
+      <div className="absolute inset-0 z-0 bg-base/78" />
+      <div className="absolute inset-0 z-0 bg-linear-to-t from-base/90 via-transparent to-base/60" />
 
       <div className="container-x relative z-10 flex min-h-[58svh] flex-col items-center justify-center py-20 text-center sm:py-24">
         <Reveal variant="fade">
-          <span className="text-eyebrow text-sage-soft">Ready when you are</span>
+          <span className="text-eyebrow text-brass-soft">Ready when you are</span>
         </Reveal>
 
         <AnimatedText
           as="h2"
           text="Let's build the room you keep imagining"
-          className="text-h2 mt-5 max-w-[18ch] text-balance text-bone"
+          className="text-h2 mt-5 max-w-[18ch] text-balance text-ivory"
           highlight={[3, 4]}
         />
 
         <Reveal variant="up" delay={0.12}>
-          <p className="text-body mx-auto mt-5 max-w-[46ch] text-bone/70">
+          <p className="text-body mx-auto mt-5 max-w-[46ch] text-ivory/70">
             Send us your floor plan, a rough budget and one photo of a space you
             love. We will come back within two working days with a direction and
             a realistic number.
@@ -61,15 +61,15 @@ export default function CTA() {
             <a
               href="#contact"
               data-cursor="Enquire"
-              className="group relative inline-flex items-center gap-3 overflow-hidden rounded-full bg-bone px-9 py-4 text-[11px] uppercase tracking-[0.18em] text-forest"
+              className="group relative inline-flex items-center gap-3 overflow-hidden rounded-full bg-brass px-9 py-4 text-[11px] uppercase tracking-[0.18em] text-base"
             >
-              <span className="relative z-10 transition-colors duration-500 group-hover:text-bone">
+              <span className="relative z-10">
                 Book a free consultation
               </span>
-              <span className="relative z-10 transition-all duration-500 group-hover:translate-x-1 group-hover:text-bone">
+              <span className="relative z-10 transition-transform duration-500 group-hover:translate-x-1">
                 →
               </span>
-              <span className="absolute inset-0 origin-left scale-x-0 bg-sage transition-transform duration-500 ease-[cubic-bezier(0.76,0,0.24,1)] group-hover:scale-x-100" />
+              <span className="absolute inset-0 origin-left scale-x-0 bg-ivory transition-transform duration-500 ease-[cubic-bezier(0.76,0,0.24,1)] group-hover:scale-x-100" />
             </a>
           </Magnetic>
         </Reveal>

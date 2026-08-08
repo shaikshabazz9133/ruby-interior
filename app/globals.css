@@ -1,26 +1,30 @@
 @import "tailwindcss";
 
 /* ==========================================================================
-   RUYA Interiors — Design System  ·  Sage & Bone
+   RUYA Interiors — Design System  ·  Onyx & Brass
+
+   A dark, warm system. Three near-black surfaces carry the vertical rhythm
+   (base → surface → elevated), brass does all the accent work, and ivory is
+   the only ink. Nothing here is neutral-grey; every step keeps a warm cast so
+   the interior photography sits inside the page rather than on top of it.
    ========================================================================== */
 
 @theme {
-  /* Surfaces */
-  --color-bone: #f4f2ec;
-  --color-bone-2: #eceade;
-  --color-sage-pale: #e3e2d6;
-  --color-forest: #2c332c;
-  --color-forest-2: #384038;
-  --color-forest-3: #454e44;
+  /* Surfaces — each step is a value shift, never a hue shift */
+  --color-base: #0e0e0c;
+  --color-surface: #161713;
+  --color-elevated: #1f201a;
+  --color-elevated-2: #2a2b24;
 
   /* Accents */
-  --color-sage: #7e8c6a;
-  --color-sage-soft: #9aa789;
-  --color-walnut: #8a6244;
+  --color-brass: #c9a66b;
+  --color-brass-soft: #e0c48f;
+  --color-clay: #cf8f61;
 
-  /* Text */
-  --color-muted: #6e6e63;
-  --color-muted-light: #a8ac9b;
+  /* Ink */
+  --color-ivory: #f1ede4;
+  --color-muted: #9c978a;
+  --color-muted-dim: #6f6a60;
 
   /* Type */
   --font-display: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
@@ -35,6 +39,17 @@
   --animate-marquee-rev: marquee-rev 46s linear infinite;
   --animate-spin-slow: spin 20s linear infinite;
   --animate-scroll-hint: scroll-hint 2.1s var(--ease-in-out-quart) infinite;
+  --animate-ken-burns: ken-burns 9s var(--ease-out-expo) forwards;
+}
+
+/* Slow push into the frame while a hero slide is on screen */
+@keyframes ken-burns {
+  from {
+    transform: scale(1.02) translate3d(0, 0, 0);
+  }
+  to {
+    transform: scale(1.13) translate3d(-1.5%, -1%, 0);
+  }
 }
 
 @keyframes marquee {
@@ -98,8 +113,8 @@
   }
 
   body {
-    background-color: var(--color-bone);
-    color: var(--color-forest);
+    background-color: var(--color-base);
+    color: var(--color-ivory);
     font-family: var(--font-sans);
     font-weight: 300;
     -webkit-font-smoothing: antialiased;
@@ -108,8 +123,8 @@
   }
 
   ::selection {
-    background: var(--color-sage);
-    color: var(--color-bone);
+    background: var(--color-brass);
+    color: var(--color-base);
   }
 
   h1,
@@ -131,14 +146,14 @@
     width: 8px;
   }
   ::-webkit-scrollbar-track {
-    background: var(--color-bone-2);
+    background: var(--color-surface);
   }
   ::-webkit-scrollbar-thumb {
-    background: var(--color-sage-soft);
+    background: var(--color-elevated-2);
     border-radius: 99px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: var(--color-sage);
+    background: var(--color-brass);
   }
 }
 
@@ -200,7 +215,7 @@
 
 @utility accent-italic {
   font-style: italic;
-  color: var(--color-sage);
+  color: var(--color-brass);
 }
 
 /* Mask that hides overflowing text before it animates up into view */

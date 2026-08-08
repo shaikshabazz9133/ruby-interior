@@ -11,15 +11,15 @@ export default function Marquee() {
   const items = [...MARQUEE_WORDS, ...MARQUEE_WORDS];
 
   return (
-    <section aria-hidden="true" className="bg-forest py-5 sm:py-6">
+    <section aria-hidden="true" className="bg-elevated py-5 sm:py-6">
       <div className="edge-fade-x flex overflow-hidden">
         <div className="flex w-max shrink-0 animate-marquee items-center will-change-transform">
           {items.map((word, i) => (
             <span key={i} className="flex items-center">
-              <span className="whitespace-nowrap px-5 font-display text-lg italic text-bone/90 sm:px-7 sm:text-2xl">
+              <span className="whitespace-nowrap px-5 font-display text-lg italic text-ivory/90 sm:px-7 sm:text-2xl">
                 {word}
               </span>
-              <span className="size-1 shrink-0 rotate-45 bg-sage-soft" />
+              <span className="size-1 shrink-0 rotate-45 bg-brass-soft" />
             </span>
           ))}
         </div>

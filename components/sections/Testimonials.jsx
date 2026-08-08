@@ -35,14 +35,14 @@ export default function Testimonials() {
 
   return (
     <section
-      className="section-y relative overflow-hidden bg-sage-pale"
+      className="section-y relative overflow-hidden bg-base"
       onPointerEnter={() => setPaused(true)}
       onPointerLeave={() => setPaused(false)}
     >
       {/* Oversized quote glyph */}
       <span
         aria-hidden="true"
-        className="pointer-events-none absolute -top-16 left-1/2 -translate-x-1/2 select-none font-display text-[20rem] leading-none text-forest/5 sm:text-[28rem]"
+        className="pointer-events-none absolute -top-16 left-1/2 -translate-x-1/2 select-none font-display text-[20rem] leading-none text-ivory/5 sm:text-[28rem]"
       >
         &rdquo;
       </span>
@@ -50,13 +50,13 @@ export default function Testimonials() {
       <div className="container-x relative">
         <div className="mx-auto max-w-3xl text-center">
           <Reveal variant="fade">
-            <span className="text-eyebrow text-walnut">Client words</span>
+            <span className="text-eyebrow text-clay">Client words</span>
           </Reveal>
 
           <AnimatedText
             as="h2"
             text="The part we cannot design ourselves"
-            className="text-h2 mt-4 text-balance text-forest"
+            className="text-h2 mt-4 text-balance text-ivory"
             highlight={[1, 2]}
           />
 
@@ -80,12 +80,12 @@ export default function Testimonials() {
                 }}
                 className="cursor-grab active:cursor-grabbing"
               >
-                <p className="font-display text-[clamp(1.35rem,2.7vw,2.1rem)] leading-[1.35] text-balance text-forest">
+                <p className="font-display text-[clamp(1.35rem,2.7vw,2.1rem)] leading-[1.35] text-balance text-ivory">
                   &ldquo;{active.quote}&rdquo;
                 </p>
 
                 <footer className="mt-7 flex items-center justify-center gap-4">
-                  <span className="relative size-12 shrink-0 overflow-hidden rounded-full ring-1 ring-forest/15">
+                  <span className="relative size-12 shrink-0 overflow-hidden rounded-full ring-1 ring-ivory/15">
                     <Image
                       src={active.image}
                       alt={active.name}
@@ -95,7 +95,7 @@ export default function Testimonials() {
                     />
                   </span>
                   <div className="text-left">
-                    <cite className="block font-sans text-sm not-italic text-forest">
+                    <cite className="block font-sans text-sm not-italic text-ivory">
                       {active.name}
                     </cite>
                     <span className="mt-0.5 block text-[10px] uppercase tracking-[0.18em] text-muted">
@@ -112,7 +112,7 @@ export default function Testimonials() {
             <button
               onClick={() => go(-1)}
               aria-label="Previous testimonial"
-              className="grid size-10 place-items-center rounded-full border border-forest/20 text-forest transition-all duration-400 hover:border-forest hover:bg-forest hover:text-bone"
+              className="grid size-10 place-items-center rounded-full border border-ivory/20 text-ivory transition-all duration-400 hover:border-brass hover:bg-brass hover:text-base"
             >
               ←
             </button>
@@ -124,7 +124,7 @@ export default function Testimonials() {
                   onClick={() => setState([i, i > index ? 1 : -1])}
                   aria-label={`Go to testimonial ${i + 1}`}
                   aria-current={i === index}
-                  className="relative h-[3px] overflow-hidden rounded-full bg-forest/20 transition-all duration-500"
+                  className="relative h-[3px] overflow-hidden rounded-full bg-ivory/15 transition-all duration-500"
                   style={{ width: i === index ? 40 : 14 }}
                 >
                   {/* CSS animation so hovering freezes the fill in place
@@ -132,7 +132,7 @@ export default function Testimonials() {
                   {i === index && !reduced && (
                     <span
                       key={index}
-                      className="absolute inset-y-0 left-0 bg-walnut"
+                      className="absolute inset-y-0 left-0 bg-clay"
                       style={{
                         animation: `progress ${AUTOPLAY_MS}ms linear forwards`,
                         animationPlayState: paused ? "paused" : "running",
@@ -140,7 +140,7 @@ export default function Testimonials() {
                     />
                   )}
                   {i === index && reduced && (
-                    <span className="absolute inset-0 bg-walnut" />
+                    <span className="absolute inset-0 bg-clay" />
                   )}
                 </button>
               ))}
@@ -149,7 +149,7 @@ export default function Testimonials() {
             <button
               onClick={() => go(1)}
               aria-label="Next testimonial"
-              className="grid size-10 place-items-center rounded-full border border-forest/20 text-forest transition-all duration-400 hover:border-forest hover:bg-forest hover:text-bone"
+              className="grid size-10 place-items-center rounded-full border border-ivory/20 text-ivory transition-all duration-400 hover:border-brass hover:bg-brass hover:text-base"
             >
               →
             </button>
