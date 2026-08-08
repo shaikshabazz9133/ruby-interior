@@ -18,7 +18,7 @@ const TAGS = {
  * Splits a string into words and slides each one up from behind a mask.
  * Words (not characters) keep long headlines wrapping naturally on phones.
  *
- * `highlight` takes word indexes to render in the sage accent italic.
+ * `highlight` takes word indexes to render in the brass accent italic.
  */
 export default function AnimatedText({
   text,

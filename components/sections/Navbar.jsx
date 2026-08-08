@@ -69,7 +69,7 @@ export default function Navbar() {
         transition={{ duration: 0.45, ease: EASE }}
         className={`fixed inset-x-0 top-0 z-80 transition-colors duration-500 ${
           scrolled && !open
-            ? "border-b border-forest/10 bg-bone/85 backdrop-blur-xl"
+            ? "border-b border-ivory/10 bg-base/85 backdrop-blur-xl"
             : "border-b border-transparent"
         }`}
       >
@@ -81,11 +81,11 @@ export default function Navbar() {
             className="group relative z-10 shrink-0"
             aria-label="RUYA Interiors — home"
           >
-            <span className="font-display text-[26px] tracking-tight text-forest">RUYA</span>
-            <span className="ml-1.5 hidden text-[9px] uppercase tracking-[0.28em] text-sage sm:inline">
+            <span className="font-display text-[26px] tracking-tight text-ivory">RUYA</span>
+            <span className="ml-1.5 hidden text-[9px] uppercase tracking-[0.28em] text-brass sm:inline">
               Interiors
             </span>
-            <span className="absolute -bottom-1 left-0 h-px w-0 bg-sage transition-all duration-500 group-hover:w-full" />
+            <span className="absolute -bottom-1 left-0 h-px w-0 bg-brass transition-all duration-500 group-hover:w-full" />
           </a>
 
           {/* Desktop links */}
@@ -96,13 +96,13 @@ export default function Navbar() {
                 <li key={link.href}>
                   <a
                     href={link.href}
-                    className={`group relative block px-3.5 py-2 text-[12px] uppercase tracking-[0.14em] transition-colors ${
-                      isActive ? "text-forest" : "text-muted hover:text-forest"
+                    className={`group relative block px-3.5 py-2 text-[12px] uppercase tracking-[0.14em] transition-colors duration-400 ${
+                      isActive ? "text-ivory" : "text-muted hover:text-ivory"
                     }`}
                   >
                     {link.label}
                     <span
-                      className={`absolute bottom-1 left-3.5 h-px bg-sage transition-all duration-400 ${
+                      className={`absolute bottom-1 left-3.5 h-px bg-brass transition-all duration-400 ${
                         isActive
                           ? "w-[calc(100%-1.75rem)]"
                           : "w-0 group-hover:w-[calc(100%-1.75rem)]"
@@ -118,12 +118,12 @@ export default function Navbar() {
             <Magnetic className="hidden xl:block">
               <a
                 href={`tel:${CONTACT.phone.replace(/\s/g, "")}`}
-                className="group relative inline-block overflow-hidden rounded-full border border-forest/25 px-6 py-2.5 text-[11px] uppercase tracking-[0.16em] text-forest"
+                className="group relative inline-block overflow-hidden rounded-full border border-brass/40 px-6 py-2.5 text-[11px] uppercase tracking-[0.16em] text-brass transition-colors duration-400 hover:border-brass"
               >
-                <span className="relative z-10 transition-colors duration-400 group-hover:text-bone">
+                <span className="relative z-10 transition-colors duration-400 group-hover:text-base">
                   Book a consult
                 </span>
-                <span className="absolute inset-0 origin-bottom scale-y-0 bg-forest transition-transform duration-500 ease-[cubic-bezier(0.76,0,0.24,1)] group-hover:scale-y-100" />
+                <span className="absolute inset-0 origin-bottom scale-y-0 bg-brass transition-transform duration-500 ease-in-out-quart group-hover:scale-y-100" />
               </a>
             </Magnetic>
 
@@ -132,16 +132,16 @@ export default function Navbar() {
               onClick={() => setOpen((v) => !v)}
               aria-label={open ? "Close menu" : "Open menu"}
               aria-expanded={open}
-              className="relative z-10 flex size-10 items-center justify-center rounded-full border border-forest/15 transition-colors hover:border-sage lg:hidden"
+              className="relative z-10 flex size-10 items-center justify-center rounded-full border border-ivory/20 transition-colors duration-400 hover:border-brass lg:hidden"
             >
               <span className="relative block h-3 w-5">
                 <motion.span
-                  className="absolute left-0 block h-px w-full bg-forest"
+                  className="absolute left-0 block h-px w-full bg-ivory"
                   animate={open ? { top: 6, rotate: 45 } : { top: 0, rotate: 0 }}
                   transition={{ duration: 0.35, ease: EASE }}
                 />
                 <motion.span
-                  className="absolute left-0 block h-px w-full bg-forest"
+                  className="absolute left-0 block h-px w-full bg-ivory"
                   animate={open ? { top: 6, rotate: -45 } : { top: 12, rotate: 0 }}
                   transition={{ duration: 0.35, ease: EASE }}
                 />
@@ -155,7 +155,7 @@ export default function Navbar() {
       <AnimatePresence>
         {open && (
           <motion.div
-            className="fixed inset-0 z-75 flex flex-col justify-between overflow-hidden bg-bone pt-16 lg:hidden"
+            className="fixed inset-0 z-75 flex flex-col justify-between overflow-hidden bg-base pt-16 lg:hidden"
             initial={{ clipPath: "inset(0 0 100% 0)" }}
             animate={{ clipPath: "inset(0 0 0% 0)" }}
             exit={{ clipPath: "inset(0 0 100% 0)" }}
@@ -163,7 +163,7 @@ export default function Navbar() {
           >
             <div
               aria-hidden="true"
-              className="pointer-events-none absolute -right-24 top-1/4 size-[380px] rounded-full bg-sage/15 blur-[100px]"
+              className="pointer-events-none absolute -right-24 top-1/4 size-[380px] rounded-full bg-brass/15 blur-[100px]"
             />
 
             <ul
@@ -175,13 +175,13 @@ export default function Navbar() {
                   <motion.a
                     href={link.href}
                     onClick={() => setOpen(false)}
-                    className="flex items-baseline gap-4 py-1.5 font-display text-[clamp(2.1rem,9vw,3.25rem)] leading-[1.1] text-forest transition-colors active:text-sage"
+                    className="flex items-baseline gap-4 py-1.5 font-display text-[clamp(2.1rem,9vw,3.25rem)] leading-[1.1] text-ivory transition-colors active:text-brass"
                     initial={{ y: "110%", opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     exit={{ y: "110%", opacity: 0 }}
                     transition={{ duration: 0.65, ease: EASE, delay: 0.15 + i * 0.055 }}
                   >
-                    <span className="font-sans text-[10px] tracking-[0.2em] text-sage">
+                    <span className="font-sans text-[10px] tracking-[0.2em] text-brass">
                       0{i + 1}
                     </span>
                     {link.label}
@@ -191,7 +191,7 @@ export default function Navbar() {
             </ul>
 
             <motion.div
-              className="container-x border-t border-forest/10 py-6"
+              className="container-x border-t border-ivory/10 py-6"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
@@ -200,13 +200,13 @@ export default function Navbar() {
               <div className="flex flex-col gap-3">
                 <a
                   href={`mailto:${CONTACT.email}`}
-                  className="text-base text-forest underline decoration-sage/50 underline-offset-4"
+                  className="text-base text-ivory underline decoration-brass/50 underline-offset-4"
                 >
                   {CONTACT.email}
                 </a>
                 <a
                   href={`tel:${CONTACT.phone.replace(/\s/g, "")}`}
-                  className="text-base text-forest"
+                  className="text-base text-ivory"
                 >
                   {CONTACT.phone}
                 </a>

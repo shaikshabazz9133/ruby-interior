@@ -77,7 +77,7 @@ export default function Preloader({ onDone }) {
             {[0, 1, 2, 3].map((i) => (
               <motion.div
                 key={i}
-                className="h-full flex-1 bg-forest"
+                className="h-full flex-1 bg-base"
                 initial={{ y: 0 }}
                 exit={{ y: "-101%" }}
                 transition={{ duration: 1, ease: EASE, delay: i * 0.075 }}
@@ -92,34 +92,34 @@ export default function Preloader({ onDone }) {
             <div className="container-x flex flex-col gap-8">
               <div className="overflow-hidden">
                 <motion.h1
-                  className="text-[clamp(2.5rem,10vw,7rem)] leading-[0.9] tracking-[-0.03em] text-bone"
+                  className="text-[clamp(2.5rem,10vw,7rem)] leading-[0.9] tracking-[-0.03em] text-ivory"
                   initial={{ y: "100%" }}
                   animate={{ y: 0 }}
                   transition={{ duration: 1.1, ease: EASE, delay: 0.15 }}
                 >
                   RUYA
-                  <span className="italic text-sage-soft"> Interiors</span>
+                  <span className="italic text-brass-soft"> Interiors</span>
                 </motion.h1>
               </div>
 
               <div className="flex items-end justify-between gap-6">
                 <motion.p
-                  className="max-w-xs text-xs uppercase tracking-[0.3em] text-sage-soft sm:text-sm"
+                  className="max-w-xs text-xs uppercase tracking-[0.3em] text-brass-soft sm:text-sm"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.8, delay: 0.5 }}
                 >
                   Where your vision takes shape
                 </motion.p>
-                <span className="font-display text-[clamp(2rem,7vw,5rem)] leading-none text-sage-soft tabular-nums">
+                <span className="font-display text-[clamp(2rem,7vw,5rem)] leading-none text-brass-soft tabular-nums">
                   {String(progress).padStart(3, "0")}
                 </span>
               </div>
 
               {/* Loading rule */}
-              <div className="h-px w-full bg-bone/15">
+              <div className="h-px w-full bg-ivory/15">
                 <motion.div
-                  className="h-full bg-sage"
+                  className="h-full bg-brass"
                   style={{ width: `${progress}%` }}
                 />
               </div>

@@ -21,22 +21,22 @@ export default function Process() {
   });
 
   return (
-    <section id="process" className="section-y bg-bone">
+    <section id="process" className="section-y bg-surface">
       <div className="container-x">
         {/* ---------- Header ---------- */}
         <div className="mx-auto max-w-2xl text-center">
           <Reveal variant="fade">
             <div className="flex items-center justify-center gap-3">
-              <span className="h-px w-8 bg-walnut" />
-              <span className="text-eyebrow text-walnut">How it works</span>
-              <span className="h-px w-8 bg-walnut" />
+              <span className="h-px w-8 bg-clay" />
+              <span className="text-eyebrow text-clay">How it works</span>
+              <span className="h-px w-8 bg-clay" />
             </div>
           </Reveal>
 
           <AnimatedText
             as="h2"
             text="From first sketch to keys in hand"
-            className="text-h2 mt-5 text-balance text-forest"
+            className="text-h2 mt-5 text-balance text-ivory"
             highlight={[5, 6]}
           />
 
@@ -51,18 +51,18 @@ export default function Process() {
         {/* ---------- Timeline ---------- */}
         <div ref={trackRef} className="relative mt-12 lg:mt-16">
           {/* Horizontal rail (desktop) */}
-          <div className="absolute left-0 right-0 top-5 hidden h-px bg-forest/12 lg:block">
+          <div className="absolute left-0 right-0 top-5 hidden h-px bg-ivory/12 lg:block">
             <motion.div
               style={{ scaleX: fill }}
-              className="h-full origin-left bg-linear-to-r from-sage to-walnut"
+              className="h-full origin-left bg-linear-to-r from-brass to-clay"
             />
           </div>
 
           {/* Vertical rail (mobile / tablet) */}
-          <div className="absolute bottom-2 left-5 top-2 w-px bg-forest/12 lg:hidden">
+          <div className="absolute bottom-2 left-5 top-2 w-px bg-ivory/12 lg:hidden">
             <motion.div
               style={{ scaleY: fill }}
-              className="h-full origin-top bg-linear-to-b from-sage to-walnut"
+              className="h-full origin-top bg-linear-to-b from-brass to-clay"
             />
           </div>
 
@@ -76,15 +76,15 @@ export default function Process() {
                 className="relative flex gap-5 lg:block"
               >
                 {/* Node */}
-                <span className="relative z-10 grid size-10 shrink-0 place-items-center rounded-full border border-sage/45 bg-bone font-sans text-[10px] tracking-[0.12em] text-sage">
+                <span className="relative z-10 grid size-10 shrink-0 place-items-center rounded-full border border-brass/45 bg-surface font-sans text-[10px] tracking-[0.12em] text-brass">
                   {item.step}
                 </span>
 
                 <div className="min-w-0 pb-1 lg:mt-5">
-                  <span className="text-[9px] uppercase tracking-[0.2em] text-walnut">
+                  <span className="text-[9px] uppercase tracking-[0.2em] text-clay">
                     {item.duration}
                   </span>
-                  <h3 className="text-h3 mt-1.5 text-forest">{item.title}</h3>
+                  <h3 className="text-h3 mt-1.5 text-ivory">{item.title}</h3>
                   <p className="mt-2 max-w-[42ch] text-sm leading-relaxed text-muted">
                     {item.body}
                   </p>
