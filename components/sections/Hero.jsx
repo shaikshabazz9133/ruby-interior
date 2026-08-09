@@ -5,6 +5,7 @@ import Image from "next/image";
 import {
   AnimatePresence,
   motion,
+  useMotionValue,
   useReducedMotion,
   useScroll,
   useSpring,
@@ -65,19 +66,40 @@ export default function Hero({ start = true }) {
   const next = useCallback(() => setSlide(([i]) => [(i + 1) % count, 1]), [count]);
   const prev = useCallback(() => setSlide(([i]) => [(i - 1 + count) % count, -1]), [count]);
 
-  // Autoplay — held until the preloader lifts, and parked while the visitor
-  // is hovering, dragging or on another tab.
+  // 0 → 1 across the slide's dwell. A motion value rather than state: it feeds
+  // the progress rail every frame without re-rendering the hero.
+  const progress = useMotionValue(0);
+
+  // Restart the dwell whenever the slide changes, however it changed.
+  useEffect(() => {
+    progress.set(0);
+  }, [index, progress]);
+
+  // Autoplay — held until the preloader lifts, and parked while the visitor is
+  // hovering or dragging. One rAF loop drives both the rail and the advance, so
+  // the bar can never finish out of step with the slide. rAF is also throttled
+  // to a stop on a hidden tab, which parks the carousel for free.
   useEffect(() => {
     if (!start || paused) return;
-    const id = setTimeout(next, DURATION);
-    return () => clearTimeout(id);
-  }, [start, paused, index, next]);
-
-  useEffect(() => {
-    const onVisibility = () => setPaused(document.hidden);
-    document.addEventListener("visibilitychange", onVisibility);
-    return () => document.removeEventListener("visibilitychange", onVisibility);
-  }, []);
+    let frame;
+    let last = null;
+    const tick = (now) => {
+      // Clamp the delta: a backgrounded tab returns with a huge gap that would
+      // otherwise skip a slide the moment the visitor comes back.
+      const delta = last === null ? 0 : Math.min(now - last, 120);
+      last = now;
+      const value = progress.get() + delta / DURATION;
+      if (value >= 1) {
+        progress.set(1);
+        next();
+        return;
+      }
+      progress.set(value);
+      frame = requestAnimationFrame(tick);
+    };
+    frame = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frame);
+  }, [start, paused, index, next, progress]);
 
   // Arrow keys, but only while the hero still owns the screen.
   useEffect(() => {
@@ -124,9 +146,9 @@ export default function Hero({ start = true }) {
   };
   const endDrag = (e) => {
     const from = dragStart.current;
+    if (!from) return;
     dragStart.current = null;
     setPaused(false);
-    if (!from) return;
     const dx = e.clientX - from.x;
     const dy = e.clientY - from.y;
     // Horizontal intent only, so a vertical scroll never changes the slide.
@@ -151,10 +173,23 @@ export default function Hero({ start = true }) {
       onPointerDown={onPointerDown}
       onPointerUp={endDrag}
       onPointerCancel={endDrag}
+      onPointerLeave={endDrag}
       className="relative isolate flex min-h-svh touch-pan-y flex-col overflow-hidden bg-base text-ivory"
     >
       {/* ---------- Carousel stage ---------- */}
       <div className="absolute inset-0 -z-10 select-none">
+        {/* The slide after this one, fetched at full stage size but invisible,
+            so the wipe never uncovers a half-loaded photograph on a phone. */}
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 opacity-0">
+          <Image
+            src={HERO_SLIDES[(index + 1) % count].image}
+            alt=""
+            fill
+            sizes="100vw"
+            className="object-cover"
+          />
+        </div>
+
         <motion.div style={{ y: layerY, scale: layerScale }} className="absolute inset-0">
           <AnimatePresence initial={false} custom={dir}>
             <motion.div
@@ -371,7 +406,7 @@ export default function Hero({ start = true }) {
         onPointerLeave={onPointerLeave}
         className="container-x relative z-10 pb-6 sm:pb-8 lg:pb-10"
       >
-        <div className="flex items-end justify-between gap-3 border-t border-ivory/15 pt-4 sm:gap-5 sm:pt-5">
+        <div className="flex flex-col gap-3 border-t border-ivory/15 pt-4 sm:flex-row sm:items-end sm:justify-between sm:gap-6 sm:pt-5">
           {/* Now-showing caption */}
           <div className="flex min-w-0 items-baseline gap-3 sm:gap-4">
             <span className="shrink-0 font-display text-base text-ivory/70 tabular-nums sm:text-lg">
@@ -398,62 +433,28 @@ export default function Hero({ start = true }) {
             </AnimatePresence>
           </div>
 
-          <div className="flex shrink-0 items-center gap-3 sm:gap-6">
-            {/* Progress rails — the active one fills over the slide's dwell.
-                Below sm there is no room for them; the 03/05 counter carries
-                the position instead. */}
-            <div className="hidden items-center gap-2 sm:flex">
-              {HERO_SLIDES.map((s, i) => (
-                <button
-                  key={s.id}
-                  onClick={() => go(i, i > index ? 1 : -1)}
-                  aria-label={`Show slide ${i + 1}: ${s.project}`}
-                  aria-current={i === index}
-                  className="group relative h-6 w-12 md:w-14"
-                >
-                  <span className="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-ivory/25 transition-colors group-hover:bg-ivory/50" />
-                  {i === index && (
-                    <span
-                      key={`fill-${index}-${paused}`}
-                      className="absolute left-0 top-1/2 h-px -translate-y-1/2 bg-brass-soft"
-                      style={{
-                        animation: reduced
-                          ? "none"
-                          : `progress ${DURATION}ms linear forwards`,
-                        animationPlayState: paused ? "paused" : "running",
-                        width: reduced ? "100%" : undefined,
-                      }}
-                    />
-                  )}
-                </button>
-              ))}
-            </div>
-
-            {/* Arrows */}
-            <div className="flex items-center gap-2">
-              {[
-                { label: "Previous slide", onClick: prev, path: "M15 5l-5 5 5 5" },
-                { label: "Next slide", onClick: next, path: "M5 5l5 5-5 5" },
-              ].map((btn) => (
-                <button
-                  key={btn.label}
-                  onClick={btn.onClick}
-                  aria-label={btn.label}
-                  className="flex size-11 items-center justify-center rounded-full border border-ivory/25 text-ivory transition-colors duration-400 hover:border-brass-soft hover:bg-brass-soft/15"
-                >
-                  <svg
-                    viewBox="0 0 20 20"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.3"
-                    className="size-4"
-                    aria-hidden="true"
-                  >
-                    <path d={btn.path} />
-                  </svg>
-                </button>
-              ))}
-            </div>
+          {/* Progress rails — the active one fills over the slide's dwell, and
+              each is a tap target. On a phone they stretch the full width in
+              place of the arrows; from sm up they settle into fixed segments. */}
+          <div className="flex w-full items-center gap-2 sm:w-auto sm:shrink-0">
+            {HERO_SLIDES.map((s, i) => (
+              <button
+                key={s.id}
+                type="button"
+                onClick={() => go(i, i > index ? 1 : -1)}
+                aria-label={`Show slide ${i + 1}: ${s.project}`}
+                aria-current={i === index}
+                className="group relative h-11 flex-1 sm:h-6 sm:w-12 sm:flex-none md:w-14"
+              >
+                <span className="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-ivory/25 transition-colors group-hover:bg-ivory/50" />
+                {i === index && (
+                  <motion.span
+                    style={{ scaleX: progress, y: "-50%" }}
+                    className="absolute inset-x-0 top-1/2 h-px origin-left bg-brass-soft"
+                  />
+                )}
+              </button>
+            ))}
           </div>
         </div>
 

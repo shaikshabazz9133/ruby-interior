@@ -1,7 +1,8 @@
 // Drives the hero carousel the way a visitor would, on every screen size:
-// taps the arrow, swipes across the copy, then waits to see autoplay resume.
-// Measuring layout alone is not enough — the controls can be perfectly placed
-// and still be unreachable if a stacking or pointer-events mistake covers them.
+// taps a progress rail, swipes across the copy, then waits to see autoplay
+// carry on by itself. Measuring layout alone is not enough — the controls can
+// be perfectly placed and still be unreachable if a stacking or pointer-events
+// mistake covers them.
 import puppeteer from "puppeteer-core";
 
 const CHROME =
@@ -67,42 +68,47 @@ for (const vp of VIEWPORTS) {
       };
     };
     return {
-      prev: grab('#home button[aria-label="Previous slide"]'),
-      next: grab('#home button[aria-label="Next slide"]'),
+      arrows: document.querySelectorAll(
+        '#home button[aria-label="Previous slide"], #home button[aria-label="Next slide"]'
+      ).length,
       rail0: grab('#home button[aria-label^="Show slide 1"]'),
+      rail3: grab('#home button[aria-label^="Show slide 4"]'),
+      railLast: grab('#home button[aria-label^="Show slide 5"]'),
       section: grab("#home"),
       vw: document.documentElement.clientWidth,
       vh: document.documentElement.clientHeight,
     };
   });
 
-  for (const key of ["prev", "next", "rail0"]) {
+  if (boxes.arrows) fail(`${boxes.arrows} arrow button(s) still rendered`);
+
+  for (const key of ["rail0", "rail3", "railLast"]) {
     const b = boxes[key];
     if (!b) {
-      if (key === "rail0" && vp.width < 640) continue; // rails are ≥sm only
       fail(`${key} not found`);
       continue;
     }
     if (b.r > boxes.vw + 1 || b.l < -1)
       fail(`${key} off-screen horizontally (${b.l}→${b.r} in ${boxes.vw})`);
     if (b.b > boxes.vh + 1) fail(`${key} below the fold (bottom ${b.b} > ${boxes.vh})`);
-    if (key !== "rail0" && (b.w < 40 || b.h < 40))
-      fail(`${key} tap target only ${b.w}×${b.h} (need ≥40)`);
+    // The rail itself is a hairline; the button around it carries the target.
+    if (b.w < 40 || b.h < 24) fail(`${key} tap target only ${b.w}×${b.h}`);
   }
   if (boxes.section.h > boxes.vh + 2)
     console.log(`      · hero is ${boxes.section.h}px tall vs ${boxes.vh}px viewport`);
 
-  // 2. Does the NEXT arrow advance the carousel?
+  // 2. Does tapping a rail jump straight to that slide?
   const before = await caption(page);
-  if (boxes.next && boxes.next.r <= boxes.vw) {
-    const cx = boxes.next.l + boxes.next.w / 2;
-    const cy = boxes.next.t + boxes.next.h / 2;
+  if (boxes.rail3) {
+    const cx = boxes.rail3.l + boxes.rail3.w / 2;
+    const cy = boxes.rail3.t + boxes.rail3.h / 2;
     if (vp.mobile) await page.touchscreen.tap(cx, cy);
     else await page.mouse.click(cx, cy);
     await new Promise((r) => setTimeout(r, 1600));
     const after = await caption(page);
-    if (after === before) fail(`next arrow did not advance ("${before}")`);
-    else console.log(`      ✓ next arrow: ${before} → ${after}`);
+    if (after !== "The Clay Kitchen")
+      fail(`rail 4 landed on "${after}", expected The Clay Kitchen (was "${before}")`);
+    else console.log(`      ✓ rail tap: ${before} → ${after}`);
   }
 
   // 3. Does a swipe over the copy — not just the bare photo — advance it?
@@ -121,15 +127,19 @@ for (const vp of VIEWPORTS) {
     else console.log(`      ✓ swipe: ${b4} → ${aft}`);
   }
 
-  // 4. Does autoplay pick back up on its own? Park the mouse away from the
-  //    controls first — hovering them is meant to pause, not a stall.
+  // 4. Does autoplay pick back up on its own, and keep going? Park the mouse
+  //    away from the controls first — hovering them is meant to pause, not a
+  //    stall. Two hops, because one could just be a queued timer draining.
   if (!vp.mobile) await page.mouse.move(5, 5);
   await new Promise((r) => setTimeout(r, 300));
   const t0 = await caption(page);
   await new Promise((r) => setTimeout(r, 8000));
   const t1 = await caption(page);
   if (t0 === t1) fail(`autoplay stalled after interaction (stuck on "${t0}")`);
-  else console.log(`      ✓ autoplay resumed: ${t0} → ${t1}`);
+  await new Promise((r) => setTimeout(r, 7000));
+  const t2 = await caption(page);
+  if (t2 === t1) fail(`autoplay stopped after one slide (stuck on "${t1}")`);
+  if (t0 !== t1 && t1 !== t2) console.log(`      ✓ autoplay: ${t0} → ${t1} → ${t2}`);
 
   await page.screenshot({ path: `${OUT}/hero-${vp.name}.png` });
   await page.close();
