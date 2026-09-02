@@ -41,3 +41,6 @@ yarn-error.log*
 next-env.d.ts
 
 .audit-shots/
+
+# stray local clone of this repo
+/ruby-interior/

@@ -73,6 +73,12 @@ for (const vp of VIEWPORTS) {
       ).length,
       rail0: grab('#home button[aria-label^="Show slide 1"]'),
       rail3: grab('#home button[aria-label^="Show slide 4"]'),
+      // The rail labels itself with its project, so the check below stays
+      // correct when the slide deck is re-ordered or re-shot.
+      rail3Project: document
+        .querySelector('#home button[aria-label^="Show slide 4"]')
+        ?.getAttribute('aria-label')
+        .split(': ')[1] ?? null,
       railLast: grab('#home button[aria-label^="Show slide 5"]'),
       section: grab("#home"),
       vw: document.documentElement.clientWidth,
@@ -106,8 +112,9 @@ for (const vp of VIEWPORTS) {
     else await page.mouse.click(cx, cy);
     await new Promise((r) => setTimeout(r, 1600));
     const after = await caption(page);
-    if (after !== "The Clay Kitchen")
-      fail(`rail 4 landed on "${after}", expected The Clay Kitchen (was "${before}")`);
+    const want = boxes.rail3Project;
+    if (after !== want)
+      fail(`rail 4 landed on "${after}", expected ${want} (was "${before}")`);
     else console.log(`      ✓ rail tap: ${before} → ${after}`);
   }
 

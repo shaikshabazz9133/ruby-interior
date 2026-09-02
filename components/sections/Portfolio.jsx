@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion } from "motion/react";
 import { PROJECTS, PROJECT_FILTERS } from "@/lib/data";
@@ -79,6 +79,22 @@ export default function Portfolio() {
     };
   }, [openIdx, step, close]);
 
+  // Rail scrolling: `railRef` holds the strip, and the active button reports
+  // itself so we can centre it without querying the DOM by index.
+  const railRef = useRef(null);
+  const activeThumb = useRef(null);
+  useEffect(() => {
+    const el = activeThumb.current;
+    const rail = railRef.current;
+    if (!el || !rail) return;
+    // `scrollIntoView` on the element would also scroll the page behind the
+    // dialog, so move the rail's own scrollLeft instead.
+    rail.scrollTo({
+      left: el.offsetLeft - rail.clientWidth / 2 + el.clientWidth / 2,
+      behavior: "smooth",
+    });
+  }, [safeSlide, openIdx]);
+
   const slideVariants = {
     enter: (d) => ({ opacity: 0, x: d > 0 ? 60 : -60, scale: 1.02 }),
     center: { opacity: 1, x: 0, scale: 1 },
@@ -107,7 +123,8 @@ export default function Portfolio() {
 
             <Reveal variant="up" delay={0.1}>
               <p className="text-body mt-4 max-w-[46ch] text-ivory/55">
-                Tap any project to walk through the finished rooms.
+                Tap any collection to walk through all {PROJECTS.reduce((n, p) => n + p.gallery.length, 0)}{" "}
+                photographs, room by room.
               </p>
             </Reveal>
           </div>
@@ -176,7 +193,7 @@ export default function Portfolio() {
                 <button
                   onClick={() => openProject(i)}
                   data-cursor="View"
-                  aria-label={`View ${p.title} — ${p.gallery.length} photos`}
+                  aria-label={`View ${p.title} — ${p.gallery.length} photographs`}
                   className="absolute inset-0 z-10 cursor-pointer text-left"
                 >
                   <span className="sr-only">
@@ -219,7 +236,7 @@ export default function Portfolio() {
                       {p.title}
                     </h3>
                     <p className="mt-0.5 max-h-0 overflow-hidden text-xs text-ivory/65 opacity-0 transition-all duration-500 group-hover:max-h-8 group-hover:opacity-100">
-                      {p.location} · {p.area}
+                      {p.location} · {p.gallery.length} photos
                     </p>
                   </div>
                 </div>
@@ -292,9 +309,10 @@ export default function Portfolio() {
                           src={shots[safeSlide].src}
                           alt={`${project.title} — ${shots[safeSlide].room}`}
                           fill
-                          priority
+                          loading="eager"
                           sizes="(max-width: 1024px) 100vw, 60vw"
-                          className="object-cover"
+                          quality={90}
+                          className="object-contain"
                         />
                       </motion.div>
                     </AnimatePresence>
@@ -336,12 +354,14 @@ export default function Portfolio() {
 
                   {/* Thumbnails */}
                   <div
+                    ref={railRef}
                     data-lenis-prevent
                     className="flex w-full shrink-0 gap-2 overflow-x-auto overscroll-x-contain p-2.5 [scrollbar-width:thin] sm:p-3"
                   >
                     {shots.map((shot, i) => (
                       <button
                         key={shot.src}
+                        ref={i === safeSlide ? activeThumb : null}
                         onClick={() => setSlide([i, i > safeSlide ? 1 : -1])}
                         aria-label={`Show ${shot.room}`}
                         aria-current={i === safeSlide}
@@ -376,9 +396,8 @@ export default function Portfolio() {
 
                   <dl className="mt-6 grid grid-cols-2 gap-x-4 gap-y-3 border-y border-ivory/12 py-4 sm:grid-cols-3">
                     {[
-                      ["Area", project.area],
-                      ["Layout", project.config],
-                      ["Built in", project.duration],
+                      ["Photographs", String(project.gallery.length)],
+                      ...project.facts,
                     ].map(([k, v]) => (
                       <div key={k} className="min-w-0">
                         <dt className="text-[9px] uppercase tracking-[0.16em] text-muted">
@@ -422,7 +441,7 @@ export default function Portfolio() {
                         onClick={() => stepProject(1)}
                         className="group inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.16em] text-muted transition-colors hover:text-ivory"
                       >
-                        Next project
+                        Next collection
                         <span className="transition-transform duration-400 group-hover:translate-x-1">
                           →
                         </span>
