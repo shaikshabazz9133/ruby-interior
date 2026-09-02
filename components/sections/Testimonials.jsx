@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import Image from "next/image";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { TESTIMONIALS } from "@/lib/data";
 import AnimatedText from "@/components/ui/AnimatedText";
@@ -9,6 +8,15 @@ import Reveal from "@/components/ui/Reveal";
 
 const EASE = [0.16, 1, 0.3, 1];
 const AUTOPLAY_MS = 7000;
+
+/** "Ananya Rao" -> "AR". Stands in for a headshot we do not have. */
+const initials = (name) =>
+  name
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((w) => w[0])
+    .join("");
 
 export default function Testimonials() {
   const [[index, direction], setState] = useState([0, 0]);
@@ -85,14 +93,11 @@ export default function Testimonials() {
                 </p>
 
                 <footer className="mt-7 flex items-center justify-center gap-4">
-                  <span className="relative size-12 shrink-0 overflow-hidden rounded-full ring-1 ring-ivory/15">
-                    <Image
-                      src={active.image}
-                      alt={active.name}
-                      fill
-                      sizes="48px"
-                      className="object-cover"
-                    />
+                  <span
+                    aria-hidden="true"
+                    className="grid size-12 shrink-0 place-items-center rounded-full bg-brass/15 font-display text-sm tracking-[0.08em] text-brass-soft ring-1 ring-brass/35"
+                  >
+                    {initials(active.name)}
                   </span>
                   <div className="text-left">
                     <cite className="block font-sans text-sm not-italic text-ivory">

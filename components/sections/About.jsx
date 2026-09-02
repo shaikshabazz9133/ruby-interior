@@ -6,7 +6,7 @@ import { motion, useScroll, useTransform } from "motion/react";
 import AnimatedText from "@/components/ui/AnimatedText";
 import Reveal from "@/components/ui/Reveal";
 import Counter from "@/components/ui/Counter";
-import { STATS } from "@/lib/data";
+import { STATS, STUDIO_IMAGE } from "@/lib/data";
 
 const PRINCIPLES = [
   {
@@ -40,8 +40,8 @@ export default function About() {
             <div className="relative aspect-4/5 w-full overflow-hidden rounded-sm bg-elevated">
               <motion.div style={{ y: imgY }} className="absolute -inset-y-[6%] inset-x-0">
                 <Image
-                  src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=1000&q=80"
-                  alt="RUYA designers reviewing material samples on a studio table"
+                  src={STUDIO_IMAGE.src}
+                  alt={STUDIO_IMAGE.alt}
                   fill
                   sizes="(max-width: 1024px) 100vw, 40vw"
                   className="object-cover"

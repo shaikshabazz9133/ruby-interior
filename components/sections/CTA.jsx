@@ -6,6 +6,7 @@ import { motion, useScroll, useTransform } from "motion/react";
 import AnimatedText from "@/components/ui/AnimatedText";
 import Reveal from "@/components/ui/Reveal";
 import Magnetic from "@/components/ui/Magnetic";
+import { CTA_IMAGE } from "@/lib/data";
 
 export default function CTA() {
   const ref = useRef(null);
@@ -24,7 +25,7 @@ export default function CTA() {
     <section ref={ref} className="relative overflow-hidden">
       <motion.div style={{ y }} className="absolute -inset-y-[12%] inset-x-0 z-0">
         <Image
-          src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=80"
+          src={CTA_IMAGE.src}
           alt=""
           fill
           sizes="100vw"

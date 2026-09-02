@@ -186,6 +186,8 @@ export default function Hero({ start = true }) {
             alt=""
             fill
             sizes="100vw"
+            quality={90}
+            style={{ objectPosition: HERO_SLIDES[(index + 1) % count].focus }}
             className="object-cover"
           />
         </div>
@@ -222,8 +224,10 @@ export default function Hero({ start = true }) {
                     src={slide.image}
                     alt={`${slide.project} — interiors by RUYA`}
                     fill
-                    priority={index === 0}
+                    preload={index === 0}
                     sizes="100vw"
+                    quality={90}
+                    style={{ objectPosition: slide.focus }}
                     className="object-cover"
                   />
                 </div>
